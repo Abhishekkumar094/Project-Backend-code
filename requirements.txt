@@ -1,0 +1,14 @@
+Flask
+flask-cors
+Flask-SQLAlchemy
+mysql-connector-python
+torch
+transformers
+sentence-transformers
+scikit-learn
+numpy
+pandas
+matplotlib
+seaborn
+python-dotenv
+requests

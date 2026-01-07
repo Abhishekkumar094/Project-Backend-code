@@ -1,0 +1,42 @@
+       AI Chatbot Project – Installation Steps (Python)
+🔹Step 1: Virtual Environment create karo (recommended)
+           python -m venv venv
+
+           Windows
+           venv\Scripts\activate
+
+           Linux / Mac
+           source venv/bin/activate
+
+🔹Step 2: pip upgrade karo
+           pip install --upgrade pip
+
+🔹Step 3: Backend (Flask) libraries install karo
+           pip install Flask
+           pip install flask-cors
+           pip install Flask-SQLAlchemy
+
+🔹Step 4: Database connectivity install karo
+           pip install mysql-connector-python
+           pip install PyMySQL
+
+🔹Step 5: AI / NLP / ML libraries install karo
+           pip install torch
+           pip install transformers
+           pip install sentence-transformers
+           pip install scikit-learn
+
+🔹Step 6: Data handling libraries install karo
+           pip install numpy
+           pip install pandas
+
+🔹Step 7: Visualization (optional but used)
+           pip install matplotlib
+           pip install seaborn
+
+🔹Step 8: Utility libraries
+           pip install python-dotenv
+           pip install requests
+
+🔹Step 9: Installation verify karo
+           pip list
