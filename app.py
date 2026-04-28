@@ -6,68 +6,51 @@ import re
 app = Flask(__name__)
 CORS(app)
 
-# Clean text
 def clean_text(text):
-    text = text.lower().strip()
-    text = re.sub(r'[^\w\s]', '', text)
-    return text
+    return re.sub(r'[^\w\s]', '', text.lower().strip())
 
 @app.route("/")
 def home():
     return "Flask Chatbot API is running ✅"
 
-# Smart matching (lightweight)
+
 def get_smart_reply(user_msg):
-    cleaned_user_msg = clean_text(user_msg)
-    bot_reply = "Sorry, I can only answer college-related queries."
+    cleaned = clean_text(user_msg)
 
-    try:
-        results = db.execute("SELECT question, answer FROM faq", fetch=True)
+    results = db.execute("SELECT question, answer FROM faq", fetch=True)
 
-        if not results:
-            return bot_reply
+    # 🔴 DB fail (Render pe common)
+    if results is None:
+        return "⚠️ Server busy, try again..."
 
-        best_match = None
-        max_score = 0
+    if not results:
+        return "No data available."
 
-        user_words = set(cleaned_user_msg.split())
+    user_words = set(cleaned.split())
+    best_match = None
+    max_score = 0
 
-        for row in results:
-            question = clean_text(row["question"])
-            question_words = set(question.split())
+    for row in results:
+        q_words = set(clean_text(row["question"]).split())
+        score = len(user_words & q_words)
 
-            # similarity score (word overlap)
-            score = len(user_words & question_words)
+        if score > max_score:
+            max_score = score
+            best_match = row["answer"]
 
-            if score > max_score:
-                max_score = score
-                best_match = row["answer"]
-
-        if best_match:
-            bot_reply = best_match
-
-        # Save chat
-        db.execute(
-            "INSERT INTO messages (role, text) VALUES (%s, %s)",
-            ("user", user_msg)
-        )
-        db.execute(
-            "INSERT INTO messages (role, text) VALUES (%s, %s)",
-            ("bot", bot_reply)
-        )
-
-    except Exception as e:
-        print("DB Error:", e)
-
-    return bot_reply
+    return best_match if best_match else "I can answer only college queries."
 
 
 @app.route("/chat", methods=["POST"])
 def chat():
-    data = request.get_json()
-    user_msg = data.get("message", "")
-    bot_reply = get_smart_reply(user_msg)
-    return jsonify({"reply": bot_reply})
+    data = request.get_json() or {}
+    msg = data.get("message", "")
+
+    if not msg:
+        return jsonify({"reply": "Type something..."})
+
+    reply = get_smart_reply(msg)
+    return jsonify({"reply": reply})
 
 
 if __name__ == "__main__":
