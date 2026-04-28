@@ -1,10 +1,6 @@
 Flask
 flask-cors
-Flask-SQLAlchemy
-mysql-connector-python
+pymysql
 gunicorn
-scikit-learn
-numpy
-pandas
 python-dotenv
 requests
