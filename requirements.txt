@@ -2,6 +2,7 @@ Flask
 flask-cors
 Flask-SQLAlchemy
 mysql-connector-python
+gunicorn
 torch
 transformers
 sentence-transformers
