@@ -3,13 +3,8 @@ flask-cors
 Flask-SQLAlchemy
 mysql-connector-python
 gunicorn
-torch
-transformers
-sentence-transformers
 scikit-learn
 numpy
 pandas
-matplotlib
-seaborn
 python-dotenv
 requests
